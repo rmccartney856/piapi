@@ -5,8 +5,10 @@
 #COPY:  Copyright 2018, All Rights Reserved, Ryan McCartney
 
 import threading
+import cherrypy
 import serial
 import time
+import os
 
 #Connection Status
 leftArmActive = False
@@ -30,6 +32,28 @@ try:
         rightArmActive = False
         print("INFO: Failed to connect to Right Arm")
 
+    class API(object):
+        @cherrypy.expose
+        def index(self):
+            with open ("index.html", "r") as webPage:
+                contents=webPage.readlines()
+            return contents
 
+        def send(self,command="this"):
+            print("INFO: Sending '"+data+"' to robotic arm serial line.")
+            return data
+            
+
+    if __name__ == '__main__':
+        cherrypy.config.update({
+            '/favicon.ico': {
+            'tools.staticfile.on': True,
+            'tools.staticfile.filename': os.path.join(os.getcwd(), 'favicon.ico')
+            }
+        })
+        cherrypy.tree.mount(API())
+        cherrypy.engine.start()
+        cherrypy.engine.block()
+        
 except:
     print("ERROR: Main sequence error.")
