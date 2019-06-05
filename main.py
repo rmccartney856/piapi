@@ -10,12 +10,105 @@ import serial
 import time
 import os
 
-#Connection Status
-leftArmActive = False
-rightArmActive = False
-
 try:
     
+    class API(object):
+        @cherrypy.expose
+        def index(self):
+            with open ("simple.html", "r") as webPage:
+                contents=webPage.readlines()
+            return contents
+
+        @cherrypy.expose
+        def clearLogs(self):
+
+            #Clear Transmit Log
+            log = open("transmitLog.csv","w")
+            log.write("Date and Time,Motor,Command,Parameter,Command,Parameter\n")
+            log.close()
+
+            #Clear Receive Log
+            log = open("receiveLog.csv","w")
+            log.write("Date and Time,Motor,Command,Parameter,Command,Parameter\n")
+            log.close()
+
+            #Return Message
+            status = "INFO: Transmit and Receive Logs have been cleared."
+            print(status)
+
+            return status
+
+        @cherrypy.expose
+        def send(self,command="this"):
+            
+            #Get Current Date and Time for Logging
+            currentDateTime = time.strftime("%d/%m/%Y %H:%M:%S")
+            
+            if(self.connected == False):
+                status = self.connect()
+    
+            try:
+                #Add command to transmit log
+                with open ("transmitLog.csv", "a+") as log:
+                    log.write(command+"/n")
+
+                #Write Command Passed to Serial Port
+                payload = (str(command)+"\r\n").encode()
+                self.leftArm.write(payload)
+
+                #Read Response if Avalible
+                while leftArm.in_waiting:
+                    response = leftArm.readline()
+                    
+                #Add response to receive log
+                with open ("receiveLog.html", "a+") as log:
+                    log.write(response)
+
+                status = currentDateTime + " INFO: '"+command+"' sent succesfully."
+
+            except:
+                status = currentDateTime + " INFO: Could not send data to serial port. Check connection."
+                self.connected = False
+
+            return status
+
+        @cherrypy.expose
+        def connect(self):
+            
+            self.connected = False
+            
+            try:
+                #Open Serial Connection
+                self.leftArm = serial.Serial(
+                    port='\\.\COM7',
+                    baudrate=115200,
+                    parity=serial.PARITY_NONE,
+                    stopbits=serial.STOPBITS_ONE,
+                    bytesize=serial.EIGHTBITS
+                    )
+                self.connected = True
+                status = "INFO: Left arm arduino connected to "+leftArm.name+"\n"
+            except:
+                status = "ERROR: No Connection to Arduino\n"
+      
+            print(status)
+
+            return status   
+
+    if __name__ == '__main__':
+        cherrypy.config.update(
+            {'server.socket_host': '0.0.0.0'}
+        )     
+        cherrypy.quickstart(API(), '/',
+            {
+                '/favicon.ico':
+                {
+                    'tools.staticfile.on': True,
+                    'tools.staticfile.filename': os.path.join(os.getcwd(),'favicon.ico')
+                }
+            }
+        )
+
     try:
         leftArm = serial.Serial('/dev/ttyACM0')
         leftArmActive = True
@@ -23,37 +116,6 @@ try:
     except:
         leftArmActive = False
         print("INFO: Failed to connect to Left Arm")
-        
-    try:
-        rightArm = serial.Serial('/dev/ttyACM1')
-        rightArmActive = True
-        print("INFO: Connected to Right Arm")
-    except:
-        rightArmActive = False
-        print("INFO: Failed to connect to Right Arm")
-
-    class API(object):
-        @cherrypy.expose
-        def index(self):
-            with open ("index.html", "r") as webPage:
-                contents=webPage.readlines()
-            return contents
-
-        def send(self,command="this"):
-            print("INFO: Sending '"+data+"' to robotic arm serial line.")
-            return data
-            
-
-    if __name__ == '__main__':
-        cherrypy.config.update({
-            '/favicon.ico': {
-            'tools.staticfile.on': True,
-            'tools.staticfile.filename': os.path.join(os.getcwd(), 'favicon.ico')
-            }
-        })
-        cherrypy.tree.mount(API())
-        cherrypy.engine.start()
-        cherrypy.engine.block()
         
 except:
     print("ERROR: Main sequence error.")

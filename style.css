@@ -4,9 +4,11 @@ code {
   }
 
 body {
+	width:300px;
+	margin:0 auto;
 	font-family: helvetica, sans-serif;
 	font-size: 1vw;
-	text-align: center;
+	text-align: left;
 }
 
 h1 {
