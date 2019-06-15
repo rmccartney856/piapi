@@ -3,92 +3,93 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Robotic Arm API</title>
-    <link rel="icon" type="image/ico" href="favicon.ico" sizes="16x16">
-    <link rel="stylesheet" href="style.css">
+    <title>Arduino Serial API</title>
+    <link rel="icon" type="image/ico" href="public/favicon.ico" sizes="16x16">
+    <link rel="stylesheet" href="public/style.css">
 </head>
         
 <body>
 
-<h1>Robotic Arm API</h1>
-<p>
-    The main API for the robotic arm can be access here commands can be sent directly using the following format as a URL;
+    <img class="center" src="public/logo.png" width="150">
 
-    <code>http://127.0.0.1:8080/send?command=motor,angle,other</code>
-
-    In this case <code>motor</code> represents the motor to move, between 0 and 5, <code>angle</code> the rotation in 
-    degrees and <code>other</code> is not yet set.
-
-    Commands can also be passed directly on this page and log files of received and sent data accessed.
-
-</p>
-
-<script src="jquery.min.js"></script>
-<script>
-    function reconnect(){
-          
-        document.getElementById("status").src=on;
-            
-            //AJAX EMERGENCY COMMAND
-            $.ajax({
-                    type: "GET",
-                    url: "http://192.168.0.5:8080/reconnect",
-                    datatype: "text",
-                    success: function(result) {
-                        
-                    //If there was data read...
-                    if(result != ""){
-                        
-                        console.log(result);
-                        
-                        //Print Status Message
-                        var status = result;
-                        outputStatus = document.getElementById('status');
-                        outputStatus.innerHTML = status;
-
-                        }
-                    }
-                });
-    }
-</script>
-
-<h2>Connection</h2>
-
-<p>Connection status: <b id="status">No Connection</b></p>
-
-<button type="button" onclick=reconnect()>Connect/Reconnect</button>
-
-<h2>Interaction</h2>
-
-<p>Enter a command to pass to the arm and press send to deliver.</p>
-
-<form action="send">
-    First name:
-    <br>
-        <input type="text" name="command" value="motor,angle,other">
-    <br>
+    <h1>Arduino Serial API</h1>
     
-    <br>
-        <button type="submit">Send</button>
-</form> 
+        <button class="button" onclick="callCommand('connect')">Connect</button>
+        <button class="button" onclick="callCommand('clearLogs')">Clear Logs</button>
 
-<h2>Returned Data</h2>
+    <h2>Interaction</h2>
 
-<p>Any data return from the arms is displayed here after sending.</p>
+    <p>Enter a command to pass to the arm and press send to deliver.</p>
+    <input id="inputCommand" type="text" name="command" value="">
+    <button class="button" onclick="actionSendData()">Send</button>
 
-<h2>Logging</h2>
+    <h2>Status Message</h2>
+        
+        <p id="status">When commands are sent, their status is shown here.</p>
 
-<p>
-    Data is automatically logged as it is sent and received. 
-    Logging is undertaken in CSV format and timestamped for syncronisation. 
-    You can reset the log to clear them by following the link below.
-</p>
+    <h2>Serial Monitor</h2>
 
-<button type="submit" action=clearLogs>Clear Logs</button>
+    <div id="serialMonitor"></div>
 
-<h3>Transmit</h3>
+    </div>
 
-<h3>Receive</h3>
+    <h2>Logs</h2>
+
+        <form method="get" action="public/transmitLog.csv">
+            <button class="button" type="submit">Transmit Log</button>
+        </form>
+
+        <form method="get" action="public/receiveLog.csv">
+            <button class="button" type="submit">Receive Log</button>
+        </form>
+    
+        <p></p>
+
+<script src="public/jquery.min.js"></script>
+<script>
+
+    function actionSendData(){
+        command = document.getElementById('inputCommand').value;
+        var fullCommandString = "send?command=".concat(command);
+        callCommand(fullCommandString);
+    }
+
+    function callCommand(command){
+            
+        $.ajax({
+            type: "GET",
+            url: command,
+            datatype: "text",
+            success: function(status) {
+        
+                //Print Data to console
+                console.log(status);
+
+                //Print Status			
+                statusElement = document.getElementById('status');
+                statusElement.innerHTML = status;
+            }
+        });
+        return status;
+    }    
+
+    setInterval(function(){
+
+        $.ajax({
+            type: "GET",
+            url: "serialMonitor",
+            datatype: "text",
+            success: function(table) {
+                
+                console.log(table)
+                //Print Status			
+                serialMonitor = document.getElementById('serialMonitor');
+                serialMonitor.innerHTML = table;
+            }
+        });
+    }, 1/4 * 1000);
+    
+</script>
 
 </body>
 </html>
