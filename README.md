@@ -44,13 +44,14 @@ Simple API with web interface using AJAX and direct HTTP commands to allow remot
 * Use `glob` to detect and connect to devices automatically.
 * Responsive web design.
 * Clean table display in webpage.
-* Add the use of `setting.json` for easier configuration.
+* Add the use of `settings.json` for easier configuration.
 
 Note: The serial port is automatically connected when using the `send?command=ARDUINO_COMMAND_HERE` function. The connect command is best used to manage disconnect errors. 
 
 ## Screenshots
 
-![Screenshot 1](https://github.com/rmccartney856/pyapi/blob/master/media/logo.jpg)
+The web interface displayed in Google Chrome on a Windows 10 desktop is given as follows;
 
+![Screenshot 1](https://github.com/rmccartney856/pyapi/blob/master/media/logo.jpg)
 ![Screenshot 2](https://github.com/rmccartney856/pyapi/blob/master/media/logo.jpg)
 
