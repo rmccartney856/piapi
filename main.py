@@ -1,8 +1,8 @@
 #NAME:  main.py
-#DATE:  Wednesday 5th June 2019
+#DATE:  Monday 15th July 2019
 #AUTH:  Ryan McCartney, EEE Undergraduate, Queen's University Belfast
-#DESC:  A python script for running a cherrpi API as a serial passthrough
-#COPY:  Copyright 2018, All Rights Reserved, Ryan McCartney
+#DESC:  A python script for running a cherrpy API as a serial passthrough
+#COPY:  Copyright 2019, All Rights Reserved, Ryan McCartney
 
 import threading
 import cherrypy
@@ -167,20 +167,14 @@ try:
                         )
                     self.connected = True
                     self.receive()
-                    status = currentDateTime + " - INFO: Arduino connected to "+self.serial.name+".\n"
+                    status = currentDateTime + " - INFO: Arduino connected to "+self.serial.name+"\n"
                 except:
-                    status = currentDateTime + " - ERROR: Could not establish a connection with Arduino.\n"
+                    status = currentDateTime + " - ERROR: Could not establish a connection with Arduino\n"
       
             print(status)
 
             return status   
 
-        @cherrypy.expose
-        def getImage(self):
-
-            image = "NOT YET OPERATIONAL"
-            
-            return image
     if __name__ == '__main__':
 
         cherrypy.config.update(

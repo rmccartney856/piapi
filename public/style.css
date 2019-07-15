@@ -13,7 +13,7 @@
 	width: 180px;
 	font-size: 1vw;
 	font-family: helvetica, sans-serif;
-	background: #42d4f4;
+	background: #129ca2;
 }
 
 table {
@@ -24,13 +24,13 @@ table {
   }
   
 th {
-	border: 1px solid #42d4f4;
+	border: 1px solid #129ca2;
 	text-align: left;
 	padding: 6px;
   }
 
 td {
-	border: 1px solid #42d4f4;
+	border: 1px solid #129ca2;
 	text-align: left;
 	padding: 4px;
   }
@@ -52,7 +52,7 @@ h1 {
 	font-family: helvetica, sans-serif;
 	width: 100%;
 	font-size: 2vw;
-	color: black;
+	color: #bc1142;
 	clear: left;
 	text-align: center;
 }
@@ -70,7 +70,7 @@ input[type=text] {
 	border-radius: 8px;
 	padding: 5px;
 	margin: auto;
-	border:1px solid #42d4f4;
+	border:1px solid #129ca2;
 	width:60%;
 	font-size: 1vw;
 	font-family: helvetica, sans-serif;

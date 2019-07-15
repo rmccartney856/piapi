@@ -1,0 +1,8 @@
+{
+    "serialDevice":"/dev/ttyUSB0",
+    "serialLines":"20",
+    "baud":"115200",
+    "path":"test/test",
+    "hostname":"pyapi",
+    "repo":"https:github.com/rmccartney856/pyapi"
+}
