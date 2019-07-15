@@ -1,6 +1,6 @@
 # piapi
 
-![pyapi logo](https://github.com/rmccartney856/pyapi/blob/master/media/logo.jpg)
+![pyapi logo](https://github.com/rmccartney856/pyapi/blob/master/media/logoSmall.jpg)
 
 Simple API with web interface using AJAX and direct HTTP commands to allow remote control of any Arduino or other serial device via a Raspberry Pi.
 
@@ -50,7 +50,7 @@ Note: The serial port is automatically connected when using the `send?command=AR
 
 ## Screenshots
 
-![Screenshot 1](https://github.com/rmccartney856/pyapi/blob/master/media/logo.jpg)
+![Screenshot 1](https://github.com/rmccartney856/pyapi/blob/master/media/screenshot1.jpg)
 
-![Screenshot 2](https://github.com/rmccartney856/pyapi/blob/master/media/logo.jpg)
+![Screenshot 2](https://github.com/rmccartney856/pyapi/blob/master/media/screenshot2.jpg)
 
